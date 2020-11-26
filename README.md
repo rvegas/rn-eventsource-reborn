@@ -1,6 +1,6 @@
-# rn-eventsource
+# rn-eventsource-reborn
 
-This package that implements the [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) web standard with **some improvements** using low-level React Native networking primitives.
+This package that implements the [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) web standard with **`some improvements`** over forked library using low-level React Native networking primitives.
 
 There are several `EventSource` polyfills today, but none of them satisfy the following three goals:
 
@@ -18,12 +18,12 @@ Thanks to the low-level network primitives exposed in React Native 0.62, it beca
 Install the package in your React Native project with:
 
 ```bash
-npm install --save git+https://github.com/NepeinAV/rn-eventsource
+npm install --save git+https://github.com/NepeinAV/rn-eventsource-reborn
 ```
 
 To import the library in your project:
 ```js
-import EventSource from 'rn-eventsource';
+import EventSource from 'rn-eventsource-reborn';
 ```
 
 Once imported, you can use it like any other `EventSource`. See the [MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) for more usage examples.
@@ -59,7 +59,7 @@ source.addEventListener('state', (event) => {
 # Troubleshooting
 
 ## "EventSource don't works on Android in debug mode"
-Try to disable Flipper network interceptor. Go to **android/app/src/debug/java/<your app name>/ReactNativeFlipper.java**
+Try to disable Flipper network interceptor. Go to **android/app/src/debug/java/<your app name>/ReactNativeFlipper.java** and comment next lines of code:
 
 ```java
 ...
@@ -88,8 +88,6 @@ public class ReactNativeFlipper {
       |    }
       |  );
       |_______________________
-
-
 
 
       client.addPlugin(networkFlipperPlugin);
