@@ -97,8 +97,9 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
 
     this._headers['Cache-Control'] = 'no-store';
     this._headers.Accept = 'text/event-stream';
+
     if (this._lastEventId) {
-      this._headers['Last-Event-ID'] = this._lastEventId;
+      this._headers = this.__mergeHeaders({ 'Last-Event-ID': this._lastEventId });
     }
 
     if (eventSourceInitDict) {
@@ -138,7 +139,7 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
       ),
     );
 
-    this.__connnect();
+    this.__connect();
   }
 
   close(): void {
@@ -154,17 +155,25 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
     });
     this._subscriptions = [];
 
-    this.readyState = EventSource.CLOSED;
+    this.__changeReadyState(EventSource.CLOSED);
   }
 
-  __connnect(): void {
+  reconnect(reason: string): void {
+    this.__reconnect(reason);
+  }
+
+  changeReadyState() {
+    this.__changeReadyState();
+  }
+
+  __connect(): void {
     if (this.readyState === EventSource.CLOSED) {
       // don't attempt to reestablish connection when the source is closed
       return;
     }
 
     if (this._lastEventId) {
-      this._headers['Last-Event-ID'] = this._lastEventId;
+      this._headers = this.__mergeHeaders({ 'Last-Event-ID': this._lastEventId });
     }
 
     Networking.sendRequest(
@@ -182,7 +191,7 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
   }
 
   __reconnect(reason: string): void {
-    this.readyState = EventSource.CONNECTING;
+    this.__changeReadyState(EventSource.CONNECTING);
 
     let errorEventMessage = 'reestablishing connection';
     if (reason) {
@@ -191,10 +200,23 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
 
     this.dispatchEvent({type: 'error', data: errorEventMessage});
     if (this._reconnectIntervalMs > 0) {
-      setTimeout(this.__connnect.bind(this), this._reconnectIntervalMs);
+      setTimeout(this.__connect.bind(this), this._reconnectIntervalMs);
     } else {
-      this.__connnect();
+      this.__connect();
     }
+  }
+
+  __changeReadyState(readyState) {
+    this.dispatchEvent({
+      type: 'state',
+      data: readyState,
+    });
+
+    this.readyState = readyState;
+  }
+
+  __mergeHeaders(headers) {
+    return Object.assign({}, this._headers, headers);
   }
 
   // Internal buffer processing methods
@@ -354,7 +376,7 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
         // reconnecting
         this.url = responseHeaders.location;
         this._requestId = null;
-        this.__connnect();
+        this.__connect();
         return;
       } else {
         this.dispatchEvent({
@@ -403,7 +425,7 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
     this._eventTypeBuf = '';
     this._lastEventIdBuf = '';
 
-    this.readyState = EventSource.OPEN;
+    this.__changeReadyState(EventSource.OPEN);
     this.dispatchEvent({type: 'open'});
   }
 

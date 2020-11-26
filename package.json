@@ -1,10 +1,10 @@
 {
   "name": "rn-eventsource",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An EventSource implementation built on top of React Native's low-level Networking API",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adamchel/rn-eventsource.git"
+    "url": "https://github.com/NepeinAV/rn-eventsource.git"
   },
   "main": "lib/EventSource.js",
   "scripts": {
