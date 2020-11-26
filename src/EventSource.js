@@ -165,9 +165,21 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
   }
 
   __createSubscriptions() {
-    this._subscriptions.push(_reactNative.Networking.addListener('didReceiveNetworkResponse', args => this.__didReceiveResponse(...args)));
-    this._subscriptions.push(_reactNative.Networking.addListener('didReceiveNetworkIncrementalData', args => this.__didReceiveIncrementalData(...args)));
-    this._subscriptions.push(_reactNative.Networking.addListener('didCompleteNetworkResponse', args => this.__didCompleteResponse(...args)));
+    this._subscriptions.push(
+      Networking.addListener('didReceiveNetworkResponse', args =>
+        this.__didReceiveResponse(...args),
+      ),
+    );
+    this._subscriptions.push(
+      Networking.addListener('didReceiveNetworkIncrementalData', args =>
+        this.__didReceiveIncrementalData(...args),
+      ),
+    );
+    this._subscriptions.push(
+      Networking.addListener('didCompleteNetworkResponse', args =>
+        this.__didCompleteResponse(...args),
+      ),
+    );
   }
 
   __connect(): void {
