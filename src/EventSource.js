@@ -123,21 +123,7 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
     }
 
     this._subscriptions = [];
-    this._subscriptions.push(
-      Networking.addListener('didReceiveNetworkResponse', args =>
-        this.__didReceiveResponse(...args),
-      ),
-    );
-    this._subscriptions.push(
-      Networking.addListener('didReceiveNetworkIncrementalData', args =>
-        this.__didReceiveIncrementalData(...args),
-      ),
-    );
-    this._subscriptions.push(
-      Networking.addListener('didCompleteNetworkResponse', args =>
-        this.__didCompleteResponse(...args),
-      ),
-    );
+    this.__createSubscriptions();
 
     this.__connect();
   }
@@ -158,12 +144,30 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
     this.__changeReadyState(EventSource.CLOSED);
   }
 
+  connect(): void {
+    if (this._subscriptions.length === 0) {
+      this.__createSubscriptions();
+    }
+
+    this.__connect();
+  }
+
   reconnect(reason: string): void {
+    if (this._subscriptions.length === 0) {
+      this.__createSubscriptions();
+    }
+
     this.__reconnect(reason);
   }
 
-  changeReadyState() {
-    this.__changeReadyState();
+  changeReadyState(state: number) {
+    this.__changeReadyState(state);
+  }
+
+  __createSubscriptions() {
+    this._subscriptions.push(_reactNative.Networking.addListener('didReceiveNetworkResponse', args => this.__didReceiveResponse(...args)));
+    this._subscriptions.push(_reactNative.Networking.addListener('didReceiveNetworkIncrementalData', args => this.__didReceiveIncrementalData(...args)));
+    this._subscriptions.push(_reactNative.Networking.addListener('didCompleteNetworkResponse', args => this.__didCompleteResponse(...args)));
   }
 
   __connect(): void {
@@ -207,12 +211,12 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
   }
 
   __changeReadyState(readyState) {
+    this.readyState = readyState;
+
     this.dispatchEvent({
       type: 'state',
       data: readyState,
     });
-
-    this.readyState = readyState;
   }
 
   __mergeHeaders(headers) {
@@ -379,39 +383,41 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
         this.__connect();
         return;
       } else {
-        this.dispatchEvent({
+        this.close();
+        return this.dispatchEvent({
           type: 'error',
           data: 'got redirect with no location',
         });
-        return this.close();
       }
     }
 
     if (status !== 200) {
-      this.dispatchEvent({
+      this.close();
+
+      return this.dispatchEvent({
         type: 'error',
         data: 'unexpected HTTP status ' + status,
       });
-      return this.close();
     }
 
     if (
       responseHeaders &&
       responseHeaders['content-type'] !== 'text/event-stream'
     ) {
-      this.dispatchEvent({
+      this.close();
+      return this.dispatchEvent({
         type: 'error',
         data:
           'unsupported MIME type in response: ' +
           responseHeaders['content-type'],
       });
-      return this.close();
     } else if (!responseHeaders) {
-      this.dispatchEvent({
+      this.close();
+
+      return this.dispatchEvent({
         type: 'error',
         data: 'no MIME type in response',
       });
-      return this.close();
     }
 
     // reset the connection retry attempt counter
@@ -466,11 +472,11 @@ class EventSource extends (EventTarget(...EVENT_SOURCE_EVENTS): any) {
       this._retryAttempts += 1;
       this.__reconnect(error);
     } else {
+      this.close();
       this.dispatchEvent({
         type: 'error',
         data: 'could not reconnect after ' + maxRetryAttempts + ' attempts',
       });
-      this.close();
     }
   }
 }
