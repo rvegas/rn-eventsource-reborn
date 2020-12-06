@@ -61,7 +61,13 @@ const maxRetryAttempts: number = 5;
  *     https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
  */
 
-class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements ExtendedEventSource, EventTarget {
+const EventTargetInstance = EventTarget(EVENT_SOURCE_EVENTS);
+
+class RNEventSource extends EventTargetInstance implements ExtendedEventSource {
+    static CONNECTING: number = EventSourceState.CONNECTING;
+    static OPEN: number = EventSourceState.OPEN;
+    static CLOSED: number = EventSourceState.CLOSED;
+
     CONNECTING: number = EventSourceState.CONNECTING;
     OPEN: number = EventSourceState.OPEN;
     CLOSED: number = EventSourceState.CLOSED;
