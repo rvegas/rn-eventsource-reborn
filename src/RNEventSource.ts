@@ -60,7 +60,7 @@ const maxRetryAttempts: number = 5;
  *     https://html.spec.whatwg.org/multipage/server-sent-events.html
  *     https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
  */
-class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements ExtendedEventSource {
+class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements ExtendedEventSource {
     CONNECTING: number = EventSourceState.CONNECTING;
     OPEN: number = EventSourceState.OPEN;
     CLOSED: number = EventSourceState.CLOSED;
@@ -504,4 +504,4 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extended
     }
 }
 
-export default EventSource;
+export default RNEventSource;

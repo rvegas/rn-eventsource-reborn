@@ -23,12 +23,12 @@ npm install --save git+https://github.com/NepeinAV/rn-eventsource-reborn
 
 To import the library in your project:
 ```js
-import EventSource from 'rn-eventsource-reborn';
+import RNEventSource from 'rn-eventsource-reborn';
 ```
 
 Once imported, you can use it like any other `EventSource`. See the [MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) for more usage examples.
 ```js
-const source = new EventSource(
+const source = new RNEventSource(
     'https://www.example.com/stream?token=blah',
     { 
         headers: {

@@ -8,7 +8,7 @@
   },
   "main": "lib/index.js",
   "jsnext:main": "es/index.js",
-  "typings": "./dts/types.d.ts",
+  "typings": "./dts/index.d.ts",
   "scripts": {
     "build": "gulp",
     "postinstall": "gulp",

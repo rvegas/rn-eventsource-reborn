@@ -1,5 +1,5 @@
-import EventSource from './EventSource';
+import RNEventSource from './RNEventSource';
 
 export {
-    EventSource,
+    RNEventSource,
 }
