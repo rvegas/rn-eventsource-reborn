@@ -1,5 +1,5 @@
-lib/
-es/
-dts/
-amd/
+# lib/
+# es/
+# dts/
+# amd/
 node_modules/

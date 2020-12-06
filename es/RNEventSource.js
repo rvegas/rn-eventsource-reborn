@@ -1,58 +1,54 @@
 /**
  * Copyright (c) 2020 Adam Chelminski
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy 
- * of this software and associated documentation files (the "Software"), to 
- * deal in the Software without restriction, including without limitation the 
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
- * sell copies of the Software, and to permit persons to whom the Software is 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in 
+ * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-
 'use strict';
-
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 // @ts-ignore
 // no typings for Networking module
 import { Networking } from 'react-native';
-
 import EventTarget from 'event-target-shim';
-
-import {
-    DidCompleteNetworkResponse,
-    DidReceiveNetworkIncrementalData,
-    DidReceiveNetworkResponse,
-    EventSourceInitDict,
-    EventSourceState,
-    ExtendedEventSource,
-    Headers,
-    NetworkingListeners,
-    EventSourceEvent,
-} from './types';
-
-const EVENT_SOURCE_EVENTS = [
+import { EventSourceState, NetworkingListeners, EventSourceEvent, } from './types';
+var EVENT_SOURCE_EVENTS = [
     EventSourceEvent.ERROR,
     EventSourceEvent.MESSAGE,
     EventSourceEvent.OPEN,
     EventSourceEvent.STATE
 ];
-
 // char codes
-const bom: number[] = [239, 187, 191]; // byte order mark
-const lf: number = 10;
-const cr: number = 13;
-
-const maxRetryAttempts: number = 5;
+var bom = [239, 187, 191]; // byte order mark
+var lf = 10;
+var cr = 13;
+var maxRetryAttempts = 5;
 /**
  * An RCTNetworking-based implementation of the EventSource web standard.
  *
@@ -60,212 +56,149 @@ const maxRetryAttempts: number = 5;
  *     https://html.spec.whatwg.org/multipage/server-sent-events.html
  *     https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
  */
-
-class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements ExtendedEventSource {
-    static CONNECTING: number = EventSourceState.CONNECTING;
-    static OPEN: number = EventSourceState.OPEN;
-    static CLOSED: number = EventSourceState.CLOSED;
-
-    CONNECTING: number = EventSourceState.CONNECTING;
-    OPEN: number = EventSourceState.OPEN;
-    CLOSED: number = EventSourceState.CLOSED;
-
-    // Properties
-    readyState: number = EventSourceState.CONNECTING;
-    url: string;
-    withCredentials: boolean = false;
-
-    // Event handlers
-    onerror = null;
-    onmessage = null;
-    onopen = null;
-
-    // Buffers for event stream parsing
-    private _isFirstChunk = false;
-    private _discardNextLineFeed = false;
-    private _lineBuf: string = '';
-    private _dataBuf: string = '';
-    private _eventTypeBuf: string = '';
-    private _lastEventIdBuf: string = '';
-
-    private _headers: Headers = {};
-    private _lastEventId: string = '';
-    private _reconnectIntervalMs: number = 1000;
-    private _requestId?: number | null;
-    private _subscriptions: any[];
-    private _trackingName: string = 'unknown';
-    private _retryAttempts: number = 0;
-
-    setTrackingName(trackingName: string) {
-        this._trackingName = trackingName;
-
-        return this;
-    }
-
-    constructor(url: string, eventSourceInitDict?: EventSourceInitDict) {
-        super();
-
+var RNEventSource = /** @class */ (function (_super) {
+    __extends(RNEventSource, _super);
+    function RNEventSource(url, eventSourceInitDict) {
+        var _this = _super.call(this) || this;
+        _this.CONNECTING = EventSourceState.CONNECTING;
+        _this.OPEN = EventSourceState.OPEN;
+        _this.CLOSED = EventSourceState.CLOSED;
+        // Properties
+        _this.readyState = EventSourceState.CONNECTING;
+        _this.withCredentials = false;
+        // Event handlers
+        _this.onerror = null;
+        _this.onmessage = null;
+        _this.onopen = null;
+        // Buffers for event stream parsing
+        _this._isFirstChunk = false;
+        _this._discardNextLineFeed = false;
+        _this._lineBuf = '';
+        _this._dataBuf = '';
+        _this._eventTypeBuf = '';
+        _this._lastEventIdBuf = '';
+        _this._headers = {};
+        _this._lastEventId = '';
+        _this._reconnectIntervalMs = 1000;
+        _this._trackingName = 'unknown';
+        _this._retryAttempts = 0;
         if (!url) {
             throw new Error('Cannot open an SSE stream on an empty url');
         }
-        this.url = url;
-
-        this._headers['Cache-Control'] = 'no-store';
-        this._headers.Accept = 'text/event-stream';
-
-        if (this._lastEventId) {
-            this._headers = this.__mergeHeaders({ 'Last-Event-ID': this._lastEventId });
+        _this.url = url;
+        _this._headers['Cache-Control'] = 'no-store';
+        _this._headers.Accept = 'text/event-stream';
+        if (_this._lastEventId) {
+            _this._headers = _this.__mergeHeaders({ 'Last-Event-ID': _this._lastEventId });
         }
-
         if (eventSourceInitDict) {
             if (eventSourceInitDict.headers) {
                 if (eventSourceInitDict.headers['Last-Event-ID']) {
-                    this._lastEventId = eventSourceInitDict.headers['Last-Event-ID'];
+                    _this._lastEventId = eventSourceInitDict.headers['Last-Event-ID'];
                     delete eventSourceInitDict.headers['Last-Event-ID'];
                 }
-
                 for (var headerKey in eventSourceInitDict.headers) {
-                    const header = eventSourceInitDict.headers[headerKey];
+                    var header = eventSourceInitDict.headers[headerKey];
                     if (header) {
-                        this._headers[headerKey] = header;
+                        _this._headers[headerKey] = header;
                     }
                 }
             }
-
             if (eventSourceInitDict.withCredentials) {
-                this.withCredentials = eventSourceInitDict.withCredentials;
+                _this.withCredentials = eventSourceInitDict.withCredentials;
             }
         }
-
-        this._subscriptions = [];
-        this.__createSubscriptions();
-
-        this.__connect();
+        _this._subscriptions = [];
+        _this.__createSubscriptions();
+        _this.__connect();
+        return _this;
     }
-
-    close(): void {
+    RNEventSource.prototype.setTrackingName = function (trackingName) {
+        this._trackingName = trackingName;
+        return this;
+    };
+    RNEventSource.prototype.close = function () {
         if (this._requestId !== null && this._requestId !== undefined) {
             Networking.abortRequest(this._requestId);
         }
-
         // clean up Networking subscriptions
-        (this._subscriptions || []).forEach(sub => {
+        (this._subscriptions || []).forEach(function (sub) {
             if (sub) {
                 sub.remove();
             }
         });
         this._subscriptions = [];
-
         this.__changeReadyState(EventSourceState.CLOSED);
-    }
-
-    connect(): void {
+    };
+    RNEventSource.prototype.connect = function () {
         if (this._subscriptions.length === 0) {
             this.__createSubscriptions();
         }
-
         this.__connect();
-    }
-
-    reconnect(reason?: string): void {
+    };
+    RNEventSource.prototype.reconnect = function (reason) {
         if (this._subscriptions.length === 0) {
             this.__createSubscriptions();
         }
-
         this.__reconnect(reason);
-    }
-
-    changeReadyState(state: number) {
+    };
+    RNEventSource.prototype.changeReadyState = function (state) {
         this.__changeReadyState(state);
-    }
-
-    private __createSubscriptions() {
-        this._subscriptions.push(
-            Networking.addListener(
-                NetworkingListeners.DidReceiveNetworkResponse,
-                (args: DidReceiveNetworkResponse) => this.__didReceiveResponse(...args),
-            ),
-        );
-        this._subscriptions.push(
-            Networking.addListener(
-                NetworkingListeners.DidReceiveNetworkIncrementalData,
-                (args: DidReceiveNetworkIncrementalData) => this.__didReceiveIncrementalData(...args),
-            ),
-        );
-        this._subscriptions.push(
-            Networking.addListener(
-                NetworkingListeners.DidCompleteNetworkResponse,
-                (args: DidCompleteNetworkResponse) => this.__didCompleteResponse(...args),
-            ),
-        );
-    }
-
-    private __connect(): void | null {
+    };
+    RNEventSource.prototype.__createSubscriptions = function () {
+        var _this = this;
+        this._subscriptions.push(Networking.addListener(NetworkingListeners.DidReceiveNetworkResponse, function (args) { return _this.__didReceiveResponse.apply(_this, args); }));
+        this._subscriptions.push(Networking.addListener(NetworkingListeners.DidReceiveNetworkIncrementalData, function (args) { return _this.__didReceiveIncrementalData.apply(_this, args); }));
+        this._subscriptions.push(Networking.addListener(NetworkingListeners.DidCompleteNetworkResponse, function (args) { return _this.__didCompleteResponse.apply(_this, args); }));
+    };
+    RNEventSource.prototype.__connect = function () {
         if (this.readyState === EventSourceState.CLOSED) {
             return null;
         }
-
         if (this._lastEventId) {
             this._headers = this.__mergeHeaders({ 'Last-Event-ID': this._lastEventId });
         }
-
-        Networking.sendRequest(
-            'GET', // EventSource always GETs the resource
-            this._trackingName,
-            this.url,
-            this._headers,
-            '', // body for EventSource request is always empty
-            'text', // SSE is a text protocol
-            true, // we want incremental events
-            0, // there is no timeout defined in the WHATWG spec for EventSource
-            this.__didCreateRequest.bind(this),
-            this.withCredentials,
-        );
-    }
-
-    private __reconnect(reason?: string): void {
+        Networking.sendRequest('GET', // EventSource always GETs the resource
+        this._trackingName, this.url, this._headers, '', // body for EventSource request is always empty
+        'text', // SSE is a text protocol
+        true, // we want incremental events
+        0, // there is no timeout defined in the WHATWG spec for EventSource
+        this.__didCreateRequest.bind(this), this.withCredentials);
+    };
+    RNEventSource.prototype.__reconnect = function (reason) {
         this.__changeReadyState(EventSourceState.CONNECTING);
-
-        const errorEventMessage = `reestablishing connection${reason ? ': ' + reason : ''}`;
-
+        var errorEventMessage = "reestablishing connection" + (reason ? ': ' + reason : '');
         this.dispatchEvent({ type: EventSourceEvent.ERROR, data: errorEventMessage });
-
         if (this._reconnectIntervalMs > 0) {
             setTimeout(this.__connect.bind(this), this._reconnectIntervalMs);
-        } else {
+        }
+        else {
             this.__connect();
         }
-    }
-
-    private __changeReadyState(readyState: EventSourceState) {
+    };
+    RNEventSource.prototype.__changeReadyState = function (readyState) {
         this.readyState = readyState;
-
         this.dispatchEvent({
             type: EventSourceEvent.STATE,
             data: readyState,
         });
-    }
-
-    private __mergeHeaders(headers: EventSourceInitDict['headers']) {
+    };
+    RNEventSource.prototype.__mergeHeaders = function (headers) {
         return Object.assign({}, this._headers, headers);
-    }
-
+    };
     // Internal buffer processing methods
-
-    private __processEventStreamChunk(chunk: string): void {
+    RNEventSource.prototype.__processEventStreamChunk = function (chunk) {
+        var _this = this;
         if (this._isFirstChunk) {
-            if (
-                bom.every((charCode, idx) => {
-                    return this._lineBuf.charCodeAt(idx) === charCode;
-                })
-            ) {
+            if (bom.every(function (charCode, idx) {
+                return _this._lineBuf.charCodeAt(idx) === charCode;
+            })) {
                 // Strip byte order mark from chunk
                 chunk = chunk.slice(bom.length);
             }
             this._isFirstChunk = false;
         }
-
-        let pos: number = 0;
+        var pos = 0;
         while (pos < chunk.length) {
             if (this._discardNextLineFeed) {
                 if (chunk.charCodeAt(pos) === lf) {
@@ -274,57 +207,50 @@ class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extend
                 }
                 this._discardNextLineFeed = false;
             }
-
-            const curCharCode = chunk.charCodeAt(pos);
-
+            var curCharCode = chunk.charCodeAt(pos);
             if (curCharCode === cr || curCharCode === lf) {
                 this.__processEventStreamLine();
-
                 // Treat CRLF properly
                 if (curCharCode === cr) {
                     this._discardNextLineFeed = true;
                 }
-            } else {
+            }
+            else {
                 this._lineBuf += chunk.charAt(pos);
             }
-
             ++pos;
         }
-    }
-
-    private __processEventStreamLine(): void {
-        const line = this._lineBuf;
-
+    };
+    RNEventSource.prototype.__processEventStreamLine = function () {
+        var line = this._lineBuf;
         // clear the line buffer
         this._lineBuf = '';
-
         // Dispatch the buffered event if this is an empty line
         if (line === '') {
             this.__dispatchBufferedEvent();
             return;
         }
-
-        const colonPos = line.indexOf(':');
-
-        let field: string;
-        let value: string;
-
+        var colonPos = line.indexOf(':');
+        var field;
+        var value;
         if (colonPos === 0) {
             // this is a comment line and should be ignored
             return;
-        } else if (colonPos > 0) {
+        }
+        else if (colonPos > 0) {
             if (line[colonPos + 1] === ' ') {
                 field = line.slice(0, colonPos);
                 value = line.slice(colonPos + 2); // ignores the first space from the value
-            } else {
+            }
+            else {
                 field = line.slice(0, colonPos);
                 value = line.slice(colonPos + 1);
             }
-        } else {
+        }
+        else {
             field = line;
             value = '';
         }
-
         switch (field) {
             case 'event':
                 // Set the type of this event
@@ -341,7 +267,7 @@ class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extend
                 break;
             case 'retry':
                 // Set a new reconnect interval value
-                const newRetryMs = parseInt(value, 10);
+                var newRetryMs = parseInt(value, 10);
                 if (!isNaN(newRetryMs)) {
                     this._reconnectIntervalMs = newRetryMs;
                 }
@@ -349,57 +275,44 @@ class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extend
             default:
             // this is an unrecognized field, so this line should be ignored
         }
-    }
-
-    private __dispatchBufferedEvent() {
+    };
+    RNEventSource.prototype.__dispatchBufferedEvent = function () {
         this._lastEventId = this._lastEventIdBuf;
-
         // If the data buffer is an empty string, set the event type buffer to
         // empty string and return
         if (this._dataBuf === '') {
             this._eventTypeBuf = '';
             return;
         }
-
         // Dispatch the event
-        const eventType = this._eventTypeBuf || EventSourceEvent.MESSAGE;
+        var eventType = this._eventTypeBuf || EventSourceEvent.MESSAGE;
         this.dispatchEvent({
             type: eventType,
-            data: this._dataBuf.slice(0, -1), // remove the trailing LF from the data
+            data: this._dataBuf.slice(0, -1),
             origin: this.url,
             lastEventId: this._lastEventId,
         });
-
         // Reset the data and event type buffers
         this._dataBuf = '';
         this._eventTypeBuf = '';
-    }
-
+    };
     // Networking callbacks, exposed for testing
-
-    private __didCreateRequest(requestId: number): void {
+    RNEventSource.prototype.__didCreateRequest = function (requestId) {
         this._requestId = requestId;
-    }
-
-    private __didReceiveResponse(
-        requestId: number,
-        status: number,
-        responseHeaders?: Headers,
-        responseURL?: string,
-    ): boolean {
+    };
+    RNEventSource.prototype.__didReceiveResponse = function (requestId, status, responseHeaders, responseURL) {
         if (requestId !== this._requestId) {
             return false;
         }
-
         if (responseHeaders) {
             // make the header names case insensitive
-            for (const entry of Object.entries(responseHeaders)) {
-                const [key, value] = entry;
+            for (var _i = 0, _a = Object.entries(responseHeaders); _i < _a.length; _i++) {
+                var entry = _a[_i];
+                var key = entry[0], value = entry[1];
                 delete responseHeaders[key];
                 responseHeaders[key.toLowerCase()] = value;
             }
         }
-
         // Handle redirects
         if (status === 301 || status === 307) {
             if (responseHeaders && responseHeaders.location) {
@@ -410,7 +323,8 @@ class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extend
                 this._requestId = null;
                 this.__connect();
                 return false;
-            } else {
+            }
+            else {
                 this.close();
                 return this.dispatchEvent({
                     type: EventSourceEvent.ERROR,
@@ -418,39 +332,31 @@ class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extend
                 });
             }
         }
-
         if (status !== 200) {
             this.close();
-
             return this.dispatchEvent({
                 type: EventSourceEvent.ERROR,
                 data: 'unexpected HTTP status ' + status,
             });
         }
-
-        if (
-            responseHeaders &&
-            responseHeaders['content-type'] !== 'text/event-stream'
-        ) {
+        if (responseHeaders &&
+            responseHeaders['content-type'] !== 'text/event-stream') {
             this.close();
             return this.dispatchEvent({
                 type: EventSourceEvent.ERROR,
-                data:
-                    'unsupported MIME type in response: ' +
+                data: 'unsupported MIME type in response: ' +
                     responseHeaders['content-type'],
             });
-        } else if (!responseHeaders) {
+        }
+        else if (!responseHeaders) {
             this.close();
-
             return this.dispatchEvent({
                 type: EventSourceEvent.ERROR,
                 data: 'no MIME type in response',
             });
         }
-
         // reset the connection retry attempt counter
         this._retryAttempts = 0;
-
         // reset the stream processing buffers
         this._isFirstChunk = false;
         this._discardNextLineFeed = false;
@@ -458,33 +364,19 @@ class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extend
         this._dataBuf = '';
         this._eventTypeBuf = '';
         this._lastEventIdBuf = '';
-
         this.__changeReadyState(EventSourceState.OPEN);
         return this.dispatchEvent({ type: EventSourceEvent.OPEN });
-    }
-
-    private __didReceiveIncrementalData(
-        requestId: number,
-        responseText: string,
-        progress: number,
-        total: number,
-    ) {
+    };
+    RNEventSource.prototype.__didReceiveIncrementalData = function (requestId, responseText, progress, total) {
         if (requestId !== this._requestId) {
             return;
         }
-
         this.__processEventStreamChunk(responseText);
-    }
-
-    private __didCompleteResponse(
-        requestId: number,
-        error: string,
-        timeOutError: boolean,
-    ): void {
+    };
+    RNEventSource.prototype.__didCompleteResponse = function (requestId, error, timeOutError) {
         if (requestId !== this._requestId) {
             return;
         }
-
         // The spec states: 'Network errors that prevents the connection from being
         // established in the first place (e.g. DNS errors), should cause the user
         // agent to reestablish the connection in parallel, unless the user agent
@@ -499,14 +391,18 @@ class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extend
             // error event fired for re-establishing the connection
             this._retryAttempts += 1;
             this.__reconnect(error);
-        } else {
+        }
+        else {
             this.close();
             this.dispatchEvent({
                 type: EventSourceEvent.ERROR,
                 data: 'could not reconnect after ' + maxRetryAttempts + ' attempts',
             });
         }
-    }
-}
-
+    };
+    RNEventSource.CONNECTING = EventSourceState.CONNECTING;
+    RNEventSource.OPEN = EventSourceState.OPEN;
+    RNEventSource.CLOSED = EventSourceState.CLOSED;
+    return RNEventSource;
+}((EventTarget(EVENT_SOURCE_EVENTS))));
 export default RNEventSource;
