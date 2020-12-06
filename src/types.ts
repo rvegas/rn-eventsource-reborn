@@ -10,19 +10,19 @@ export enum EventSourceState {
     CLOSED,
 }
 
-export enum EventSourceEvents {
+export enum EventSourceEvent {
     ERROR = 'error',
     MESSAGE = 'message',
     OPEN = 'open',
     STATE = 'state',
 }
 
-export interface IEventSource extends EventSource {
+export interface ExtendedEventSource extends EventSource {
     setTrackingName(trackingName: string): this;
 
     close(): void;
     connect(): void;
-    reconnect(reason: string): void;
+    reconnect(reason?: string): void;
     changeReadyState(state: EventSourceState): void;
 }
 

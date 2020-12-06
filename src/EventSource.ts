@@ -34,17 +34,17 @@ import {
     DidReceiveNetworkResponse,
     EventSourceInitDict,
     EventSourceState,
-    IEventSource,
+    ExtendedEventSource,
     Headers,
     NetworkingListeners,
-    EventSourceEvents,
+    EventSourceEvent,
 } from './types';
 
 const EVENT_SOURCE_EVENTS = [
-    EventSourceEvents.ERROR,
-    EventSourceEvents.MESSAGE,
-    EventSourceEvents.OPEN,
-    EventSourceEvents.STATE
+    EventSourceEvent.ERROR,
+    EventSourceEvent.MESSAGE,
+    EventSourceEvent.OPEN,
+    EventSourceEvent.STATE
 ];
 
 // char codes
@@ -60,7 +60,7 @@ const maxRetryAttempts: number = 5;
  *     https://html.spec.whatwg.org/multipage/server-sent-events.html
  *     https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
  */
-class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSource {
+class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements ExtendedEventSource {
     CONNECTING: number = EventSourceState.CONNECTING;
     OPEN: number = EventSourceState.OPEN;
     CLOSED: number = EventSourceState.CLOSED;
@@ -223,7 +223,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
 
         const errorEventMessage = `reestablishing connection${reason ? ': ' + reason : ''}`;
 
-        this.dispatchEvent({ type: EventSourceEvents.ERROR, data: errorEventMessage });
+        this.dispatchEvent({ type: EventSourceEvent.ERROR, data: errorEventMessage });
 
         if (this._reconnectIntervalMs > 0) {
             setTimeout(this.__connect.bind(this), this._reconnectIntervalMs);
@@ -236,7 +236,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
         this.readyState = readyState;
 
         this.dispatchEvent({
-            type: EventSourceEvents.STATE,
+            type: EventSourceEvent.STATE,
             data: readyState,
         });
     }
@@ -357,7 +357,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
         }
 
         // Dispatch the event
-        const eventType = this._eventTypeBuf || EventSourceEvents.MESSAGE;
+        const eventType = this._eventTypeBuf || EventSourceEvent.MESSAGE;
         this.dispatchEvent({
             type: eventType,
             data: this._dataBuf.slice(0, -1), // remove the trailing LF from the data
@@ -408,7 +408,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
             } else {
                 this.close();
                 return this.dispatchEvent({
-                    type: EventSourceEvents.ERROR,
+                    type: EventSourceEvent.ERROR,
                     data: 'got redirect with no location',
                 });
             }
@@ -418,7 +418,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
             this.close();
 
             return this.dispatchEvent({
-                type: EventSourceEvents.ERROR,
+                type: EventSourceEvent.ERROR,
                 data: 'unexpected HTTP status ' + status,
             });
         }
@@ -429,7 +429,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
         ) {
             this.close();
             return this.dispatchEvent({
-                type: EventSourceEvents.ERROR,
+                type: EventSourceEvent.ERROR,
                 data:
                     'unsupported MIME type in response: ' +
                     responseHeaders['content-type'],
@@ -438,7 +438,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
             this.close();
 
             return this.dispatchEvent({
-                type: EventSourceEvents.ERROR,
+                type: EventSourceEvent.ERROR,
                 data: 'no MIME type in response',
             });
         }
@@ -455,7 +455,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
         this._lastEventIdBuf = '';
 
         this.__changeReadyState(EventSourceState.OPEN);
-        return this.dispatchEvent({ type: EventSourceEvents.OPEN });
+        return this.dispatchEvent({ type: EventSourceEvent.OPEN });
     }
 
     private __didReceiveIncrementalData(
@@ -497,7 +497,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements IEventSo
         } else {
             this.close();
             this.dispatchEvent({
-                type: EventSourceEvents.ERROR,
+                type: EventSourceEvent.ERROR,
                 data: 'could not reconnect after ' + maxRetryAttempts + ' attempts',
             });
         }
