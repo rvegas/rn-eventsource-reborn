@@ -1,7 +1,7 @@
 export type Headers = Record<string, string>;
 
 export type EventSourceInitDict = EventSourceInit & {
-    headers: Headers,
+    headers?: Headers,
 }
 
 export enum EventSourceState {
