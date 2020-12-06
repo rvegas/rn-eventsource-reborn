@@ -79,15 +79,15 @@ public class ReactNativeFlipper {
       
       // try to comment this code
       ________________________
-      |  NetworkingModule.setCustomClientBuilder(
-      |    new NetworkingModule.CustomClientBuilder() {
-      |      @Override
-      |      public void apply(OkHttpClient.Builder builder) {
-      |        builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin));
-      |      }
-      |    }
-      |  );
-      |_______________________
+      NetworkingModule.setCustomClientBuilder(
+        new NetworkingModule.CustomClientBuilder() {
+          @Override
+          public void apply(OkHttpClient.Builder builder) {
+            builder.addNetworkInterceptor(new     FlipperOkhttpInterceptor(networkFlipperPlugin));
+          }
+        }
+      );
+      _______________________
 
 
       client.addPlugin(networkFlipperPlugin);
