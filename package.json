@@ -6,8 +6,8 @@
     "type": "git",
     "url": "https://github.com/NepeinAV/rn-eventsource-reborn.git"
   },
-  "main": "lib/EventSource.js",
-  "jsnext:main": "es/EventSource.js",
+  "main": "lib/index.js",
+  "jsnext:main": "es/index.js",
   "typings": "./dts/types.d.ts",
   "scripts": {
     "build": "gulp",

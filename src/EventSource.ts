@@ -162,7 +162,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extended
         this.__connect();
     }
 
-    reconnect(reason: string): void {
+    reconnect(reason?: string): void {
         if (this._subscriptions.length === 0) {
             this.__createSubscriptions();
         }
@@ -218,7 +218,7 @@ class EventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extended
         );
     }
 
-    private __reconnect(reason: string): void {
+    private __reconnect(reason?: string): void {
         this.__changeReadyState(EventSourceState.CONNECTING);
 
         const errorEventMessage = `reestablishing connection${reason ? ': ' + reason : ''}`;
