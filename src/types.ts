@@ -1,0 +1,53 @@
+export type Headers = Record<string, string>;
+
+export type EventSourceInitDict = EventSourceInit & {
+    headers: Headers,
+}
+
+export enum EventSourceState {
+    CONNECTING = 0,
+    OPEN,
+    CLOSED,
+}
+
+export enum EventSourceEvents {
+    ERROR = 'error',
+    MESSAGE = 'message',
+    OPEN = 'open',
+    STATE = 'state',
+}
+
+export interface IEventSource extends EventSource {
+    setTrackingName(trackingName: string): this;
+
+    close(): void;
+    connect(): void;
+    reconnect(reason: string): void;
+    changeReadyState(state: EventSourceState): void;
+}
+
+export enum NetworkingListeners {
+    DidReceiveNetworkResponse = 'didReceiveNetworkResponse',
+    DidReceiveNetworkIncrementalData = 'didReceiveNetworkIncrementalData',
+    DidCompleteNetworkResponse = 'didCompleteNetworkResponse',
+}
+
+export type DidReceiveNetworkResponse = [
+    number,
+    number,
+    Headers,
+    string,
+];
+
+export type DidReceiveNetworkIncrementalData = [
+    number,
+    string,
+    number,
+    number,
+]
+
+export type DidCompleteNetworkResponse = [
+    number,
+    string,
+    boolean,
+]
