@@ -1,6 +1,6 @@
 export declare type Headers = Record<string, string>;
 export declare type EventSourceInitDict = EventSourceInit & {
-    headers: Headers;
+    headers?: Headers;
 };
 export declare enum EventSourceState {
     CONNECTING = 0,
