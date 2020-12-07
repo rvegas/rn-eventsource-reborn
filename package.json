@@ -1,6 +1,6 @@
 {
   "name": "rn-eventsource-reborn",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An EventSource implementation built on top of React Native's low-level Networking API",
   "repository": {
     "type": "git",
