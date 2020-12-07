@@ -1,2 +1,3 @@
 import RNEventSource from './RNEventSource';
-export { RNEventSource, };
+import { EventSourceEvent, EventSourceState } from './types';
+export { RNEventSource, EventSourceEvent, EventSourceState, };
