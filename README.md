@@ -18,7 +18,7 @@ Thanks to the low-level network primitives exposed in React Native 0.62, it beca
 Install the package in your React Native project with:
 
 ```bash
-npm install --save git+https://github.com/NepeinAV/rn-eventsource-reborn
+npm install --save rn-eventsource-reborn
 ```
 
 To import the library in your project:

@@ -41,10 +41,3 @@ export declare type DidCompleteNetworkResponse = [
     string,
     boolean
 ];
-export declare class RNEventSource extends EventSource implements ExtendedEventSource {
-    setTrackingName(trackingName: string): this;
-    connect(): void;
-    reconnect(reason?: string): void;
-    changeReadyState(state: EventSourceState): void;
-    test(): void;
-}

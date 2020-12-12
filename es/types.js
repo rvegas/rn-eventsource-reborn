@@ -17,4 +17,3 @@ export var NetworkingListeners;
     NetworkingListeners["DidReceiveNetworkIncrementalData"] = "didReceiveNetworkIncrementalData";
     NetworkingListeners["DidCompleteNetworkResponse"] = "didCompleteNetworkResponse";
 })(NetworkingListeners || (NetworkingListeners = {}));
-;

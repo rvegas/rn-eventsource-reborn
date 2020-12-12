@@ -21,5 +21,4 @@ define(["require", "exports"], function (require, exports) {
         NetworkingListeners["DidReceiveNetworkIncrementalData"] = "didReceiveNetworkIncrementalData";
         NetworkingListeners["DidCompleteNetworkResponse"] = "didCompleteNetworkResponse";
     })(NetworkingListeners = exports.NetworkingListeners || (exports.NetworkingListeners = {}));
-    ;
 });

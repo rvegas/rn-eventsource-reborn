@@ -1,6 +1,6 @@
 {
     "name": "rn-eventsource-reborn",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "lockfileVersion": 1,
     "requires": true,
     "dependencies": {
@@ -597,6 +597,12 @@
                         "to-regex-range": "^5.0.1"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "is-number": {
                     "version": "7.0.0",
                     "resolved": "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz",
@@ -738,6 +744,12 @@
                         "supports-color": "^7.1.0"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "source-map": {
                     "version": "0.6.1",
                     "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz",
@@ -766,6 +778,12 @@
                 "source-map": "^0.6.0"
             },
             "dependencies": {
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "source-map": {
                     "version": "0.6.1",
                     "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz",
@@ -797,6 +815,14 @@
                 "jest-haste-map": "^25.5.1",
                 "jest-runner": "^25.5.4",
                 "jest-runtime": "^25.5.4"
+            },
+            "dependencies": {
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                }
             }
         },
         "@jest/transform": {
@@ -859,6 +885,12 @@
                     "requires": {
                         "to-regex-range": "^5.0.1"
                     }
+                },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
                 },
                 "is-number": {
                     "version": "7.0.0",
@@ -1407,6 +1439,12 @@
                         "ansi-styles": "^4.1.0",
                         "supports-color": "^7.1.0"
                     }
+                },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
                 },
                 "supports-color": {
                     "version": "7.2.0",
@@ -2976,6 +3014,12 @@
                         "minimatch": "~0.2.11"
                     }
                 },
+                "graceful-fs": {
+                    "version": "1.2.3",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-1.2.3.tgz",
+                    "integrity": "sha1-FaSAaldUfLLS2/J/QuiajDRRs2Q=",
+                    "dev": true
+                },
                 "inherits": {
                     "version": "1.0.2",
                     "resolved": "https://registry.npmjs.org/inherits/-/inherits-1.0.2.tgz",
@@ -3959,6 +4003,12 @@
                         "supports-color": "^7.1.0"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "jest-cli": {
                     "version": "25.5.4",
                     "resolved": "https://registry.npmjs.org/jest-cli/-/jest-cli-25.5.4.tgz",
@@ -4177,6 +4227,12 @@
                         "to-regex-range": "^5.0.1"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "is-number": {
                     "version": "7.0.0",
                     "resolved": "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz",
@@ -4388,6 +4444,12 @@
                         "to-regex-range": "^5.0.1"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "is-number": {
                     "version": "7.0.0",
                     "resolved": "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz",
@@ -4584,6 +4646,12 @@
                         "to-regex-range": "^5.0.1"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "is-number": {
                     "version": "7.0.0",
                     "resolved": "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz",
@@ -4677,6 +4745,12 @@
                         "supports-color": "^7.1.0"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "supports-color": {
                     "version": "7.2.0",
                     "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
@@ -4745,6 +4819,12 @@
                         "supports-color": "^7.1.0"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "supports-color": {
                     "version": "7.2.0",
                     "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
@@ -4809,6 +4889,12 @@
                         "supports-color": "^7.1.0"
                     }
                 },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                },
                 "strip-bom": {
                     "version": "4.0.0",
                     "resolved": "https://registry.npmjs.org/strip-bom/-/strip-bom-4.0.0.tgz",
@@ -4833,6 +4919,14 @@
             "dev": true,
             "requires": {
                 "graceful-fs": "^4.2.4"
+            },
+            "dependencies": {
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
+                }
             }
         },
         "jest-snapshot": {
@@ -4876,6 +4970,12 @@
                         "ansi-styles": "^4.1.0",
                         "supports-color": "^7.1.0"
                     }
+                },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
                 },
                 "semver": {
                     "version": "6.3.0",
@@ -4925,6 +5025,12 @@
                         "ansi-styles": "^4.1.0",
                         "supports-color": "^7.1.0"
                     }
+                },
+                "graceful-fs": {
+                    "version": "4.2.4",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.4.tgz",
+                    "integrity": "sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==",
+                    "dev": true
                 },
                 "supports-color": {
                     "version": "7.2.0",
@@ -7599,6 +7705,15 @@
                     "resolved": "https://registry.npmjs.org/clone/-/clone-0.2.0.tgz",
                     "integrity": "sha1-xhJqkK1Pctv1rNskPMN3JP6T/B8=",
                     "dev": true
+                },
+                "graceful-fs": {
+                    "version": "3.0.12",
+                    "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-3.0.12.tgz",
+                    "integrity": "sha512-J55gaCS4iTTJfTXIxSVw3EMQckcqkpdRv3IR7gu6sq0+tbC363Zx6KH/SEwXASK9JRbhyZmVjJEVJIOxYsB3Qg==",
+                    "dev": true,
+                    "requires": {
+                        "natives": "^1.1.3"
+                    }
                 },
                 "readable-stream": {
                     "version": "1.0.34",
