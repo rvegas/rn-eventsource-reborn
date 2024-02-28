@@ -58,7 +58,7 @@ source.addEventListener('state', (event) => {
 
 # Troubleshooting
 
-## "EventSource don't works on Android in debug mode"
+## EventSource don't works on Android in debug mode
 Try to disable Flipper network interceptor. Go to **android/app/src/debug/java/<your app name>/ReactNativeFlipper.java** and comment next lines of code:
 
 ```java
