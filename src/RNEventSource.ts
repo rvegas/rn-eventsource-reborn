@@ -210,7 +210,7 @@ class RNEventSource extends (EventTarget(EVENT_SOURCE_EVENTS)) implements Extend
         }
 
         Networking.sendRequest(
-            'GET', // EventSource always GETs the resource
+            'POST', // EventSource always GETs the resource
             this._trackingName,
             this.url,
             this._headers,
